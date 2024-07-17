@@ -1,0 +1,338 @@
+<div id="page-wrapper">
+  <main>
+    <section class="supplier-header">
+      <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+          <h4 class="page-title">Dashboard</h4>
+        </div>
+        <div class="col-lg-4 col-sm-8 col-md-4 col-xs-12"></div>
+        <div class="col-lg-5 col-sm-4 col-md-4 col-xs-12">
+          <div class="row"><span class="page-title">Address:</span>
+            &nbsp;
+            <a
+              href="https://ropsten.etherscan.io/address/{{account}}"
+              target="_blank" class="info">{{account}}</a>
+          </div>
+          <div class="row"><span class="page-title">Balance:</span>
+            &nbsp; <span class="info">{{balance}} Eth</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="supplier-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-info" id="divOngoingTransaction"
+            style="display: none">Recent Transaction:
+            <span id="linkOngoingTransaction">None</span> </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-xs-12">
+          <div class="white-box bg-img">
+            <div class="bg-opacity">
+              <!-- <img class="img-insert" src="../../../assets/img/userdashbg/profile.jpg"> -->
+              <div class="row">
+                <div class="name-img">
+                  <span><i class="fas fa-user-ninja fa-9x
+                      name-circle"></i></span>
+                  <!-- </div> -->
+                  <!-- <div class="row"> -->
+                  <h4 id="userName">{{name}}</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- <div class="user-btm-box"> -->
+              <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                <p class="text-purple"><i class="fa
+                    fa-location-arrow" aria-hidden="true"></i>
+                  Location</p>
+                <h1>{{location}}</h1>
+              </div>
+
+              <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                <p class="text-blue"><i class="fa fa-briefcase"></i>
+                  Role</p>
+                <h1>{{role}}</h1>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 text-center">
+                <p class="text-danger"><i class="fa fa-cogs"></i>
+                  Settings</p>
+                <button type="button" class="btn
+                  btn-outline-dark">
+                  Edit
+                </button>
+              </div>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+          <div class="white-box">
+            <div class="row" style="padding: 0px 0px 10px 0px">
+              <div class="col-md-6">
+                <h3 class="box-title">
+                  Wholesaler Batch &nbsp;
+                  <span style="color: blue">{{ batchCount }}</span>
+                  &nbsp;
+                  <button
+                    type="button"
+                    class="btn btn-default btn-sm"
+                    (click)="getBatchCount()">
+                    <img
+                      src="https://img.icons8.com/material/24/000000/update-left-rotation.png"
+                      />
+                  </button>
+                </h3>
+              </div>
+              <div class="col-md-6" style="text-align: right">
+                <button
+                  mat-raised-button
+                  data-toggle="modal"
+                  data-target="#packageReceive">
+                  Receive Batch
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 col-lg-12 col-sm-12">
+                <ng-container *ngIf="batch_list">
+                  <div class="mat-elevation-z8">
+                    <div class="table-specification">
+                      <table mat-table [dataSource]="MedicineSource">
+                        <ng-container matColumnDef="batchId" sticky>
+                          <th mat-header-cell *matHeaderCellDef>BatchID</th>
+                          <td mat-cell *matCellDef="let element">
+                            <button
+                              type="button"
+                              class="btn btn-default btn-sm hh"
+                              data-toggle="modal"
+                              data-target="#batchIdInfo2"
+                              data-id="{{ element.BatchID }}"
+                              (click)="getBatchTx(element)">
+                              {{ element.BatchID }}
+                            </button>
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="description">
+                          <th mat-header-cell *matHeaderCellDef>Description</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{ element.Description }}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="rawMaterial">
+                          <th mat-header-cell *matHeaderCellDef>RawMaterial</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{ element.RawMaterial }}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity">
+                          <th mat-header-cell *matHeaderCellDef>Quantity</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{ element.Quantity }}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="shipper">
+                          <th mat-header-cell *matHeaderCellDef>Shipper</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{ element.Shipper }}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                          <th mat-header-cell *matHeaderCellDef>Status</th>
+                          <td mat-cell *matCellDef="let element">
+                            {{ element.Status }}
+                          </td>
+                        </ng-container>
+                        <ng-container matColumnDef="star" stickyEnd>
+                          <th mat-header-cell *matHeaderCellDef></th>
+                          <td mat-cell *matCellDef="let element">
+                            <mat-icon>more_vert</mat-icon>
+                          </td>
+                        </ng-container>
+                        <tr
+                          mat-header-row
+                          *matHeaderRowDef="displayedMedicineColumns"></tr>
+                        <tr
+                          mat-row
+                          *matRowDef="let row;
+                          columns: displayedMedicineColumns"></tr>
+                      </table>
+                    </div>
+                    <mat-paginator
+                      [pageSizeOptions]="[5, 10, 20]"
+                      showFirstLastButtons></mat-paginator>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal fade" id="packageReceive">
+    <div
+      class="modal-dialog modal-dialog-centered"
+      role="document"
+      style="z-index: 11">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Raw Package Receive
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="packageReceivePid">
+            <div class="form-group">
+              <label for="pid1">Package-ID</label>
+              <input
+                type="text"
+                formControlName="pid"
+                class="form-control"
+                id="pid1"
+                aria-describedby="pidHelp"
+                placeholder="Enter Package ID"
+                required
+                />
+              <small id="pidHelp" class="form-text text-muted">Please
+                provide
+                Package-ID of order.</small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+            data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            [disabled]="!packageReceivePid.valid"
+            (click)="medicinePackageReceived()">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="batchIdInfo2">
+    <div
+      class="modal-dialog modal-dialog-centered"
+      role="document"
+      style="z-index: 11">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Batch Details</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <br />
+        <div
+          class="modal-body"
+          id="batchinfodetails"
+          *ngIf="batchInfo.Status> -1"
+          >
+          <div class="batchinfodetailsd white-box">
+            <div class="basicdetails">
+              <h3 class="box-title">Batch Basic Info</h3>
+              <ul>
+                <li>
+                  <label>BatchID: </label>&nbsp;
+                  <span>{{ batchInfo.Batch.BatchID }}</span>
+                </li>
+                <li>
+                  <label>Manufacturer: </label>&nbsp;
+                  <span>{{ batchInfo.Batch.Manufacturer }}</span>
+                </li>
+                <li>
+                  <label>Quantity: </label>&nbsp;
+                  <span>{{ batchInfo.Batch.Quantity }}</span>
+                </li>
+                <li>
+                  <label>Shipper: </label>&nbsp;
+                  <span>{{ batchInfo.Batch.Shipper }}</span>
+                </li>
+                <li>
+                  <label>Receiver: </label>&nbsp;
+                  <span>{{ batchInfo.Batch.Receiver }}</span>
+                </li>
+              </ul>
+              <div *ngIf="batchInfo.Batch.Done" class="success-right">
+                <i class="fas fa-clipboard-check fa-2x"></i>
+              </div>
+            </div>
+            <br />
+            <div class="shipperdetails">
+              <h3 class="box-title">Batch Shipper Info</h3>
+              <ul>
+                <li>
+                  <label>Shipper Name: </label>&nbsp;
+                  <span>{{ batchInfo.Shipper.Name }}</span>
+                </li>
+                <li>
+                  <label>Shipper EthAddress: </label>&nbsp;
+                  <span>{{ batchInfo.Shipper.EthAddress }}</span>
+                </li>
+                <li>
+                  <label>Shipper Location: </label>&nbsp;
+                  <span>{{ batchInfo.Shipper.Location }}</span>
+                </li>
+              </ul>
+              <div *ngIf="batchInfo.Shipper.Done" class="success-right">
+                <i class="fas fa-clipboard-check fa-2x"></i>
+              </div>
+            </div>
+            <br />
+            <div class="receiverdetails">
+              <h3 class="box-title">Batch Receiver Info</h3>
+              <ul>
+                <li>
+                  <label>Receiver Name: </label>&nbsp;
+                  <span>{{ batchInfo.Receiver.Name }}</span>
+                </li>
+                <li>
+                  <label>Receiver EthAddress: </label>&nbsp;
+                  <span>{{ batchInfo.Receiver.EthAddress }}</span>
+                </li>
+                <li>
+                  <label>Receiver Location: </label>&nbsp;
+                  <span>{{ batchInfo.Receiver.Location }}</span>
+                </li>
+              </ul>
+              <div *ngIf="batchInfo.Receiver.Done" class="success-right">
+                <i class="fas fa-clipboard-check fa-2x"> </i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

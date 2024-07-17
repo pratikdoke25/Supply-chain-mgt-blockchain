@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  # ganachecli: simulated test rpc on dev environment
+  ganache:
+    container_name: ganache
+    build:
+      context: ./ganache
+    command: >
+      sh -c "ganache --mnemonic 'lunch basic health east endorse million just visit together cabin select mushroom'"
+    ports:
+      - 8545:8545
+
+  truffle:
+    build:
+      context: truffle
+    command: >
+      sh -c "truffle compile &&
+             truffle migrate &&
+             cp -R build/contracts ../client"
+    depends_on:
+      - ganache
+    links: 
+      - ganache
+    healthcheck:
+      test: "exit 0"
+    volumes:
+      - ./client/contracts:/client/contracts
+
+  client:
+    container_name: client
+    build:
+      context: client
+    ports:
+      - 4200:4200
+    # depends_on:
+    #   truffle:
+    #     condition: service_healthy
+    volumes:
+      - ./client/src:/client/src
+      - ./client/contracts:/client/contracts
+
